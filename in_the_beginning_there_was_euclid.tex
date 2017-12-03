@@ -1,8 +1,126 @@
+\chapter{In the begining there was Euclid}
 
-\chapter{In the Beginning there was Euclid}
-Let's start at the beginning. Almost every course in number theory starts with
-Euclid; specifically the greatest common divisor algorithm (GCD). Specifically
-the GCD algorithm is outlined in Euclid's Elements, Book VII, Proposition II.
-Here is how Euclid thought of the GCD.
+\section{Greatest Common Divisor}
 
+How many times does a smaller measure go into a larger measure?
+How many liters are in a gallon? How many meters in a kilometer?
+How many $\pi$ in a day? How many radii in a circumference? These kinds of
+questions were asked thousands of years ago and have motivated all of fundamental
+mathematics.
 
+It is just these sorts of questions that fueled the creation of Euclid's
+elements centuries ago. And this is why every number theory book that I have
+ever read begins with Euclid's Greatest Common Divisor algorithm. I have often
+thought that it would be nicer to learn about sets and groups first (after
+I had learned about sets and groups of course), but 
+when talking about sets and groups the GCD plays an important role in describing
+their structure and properties, so I will stick with tradtion and begin with
+Euclid's GCD algorithm.
+
+First let us state the GCD algorithm the way Euclid did. Euclid thought of 
+numbers as measures or lengths. So, we will use the same terminology. A 
+number therefore is a measure between two points. For example if A and B
+are points AB is a number.
+
+\begin{proposition}[To find the greatest common measure of two numbers]
+$ $\newline
+Let $AB$ and $CD$ be two numbers with $AB$ the less. We want to find the greatest
+common measure of $AB$ and $CD$. Either $AB$ can measure $CD$ or it cannot. If
+$AB$ measures $CD$ then it is the greatest common measure because it measures
+itself and itself is the greatest magnitude that can measure itself.
+
+If $AB$ does not measure $CD$ we can repeatedly subtract the lesser from 
+the greater until the remainder does measure $CD$. The remainder will be either
+some number or 1 (unity, numero uno). If the remainder is 1 then $AB$ and $CD$
+are incommenurable (A.K.A. coprime, relatively prime, RSA cnadidates).
+
+\end{proposition}
+
+When I think of the Euclidean GCD algorithm I think of learning long division
+when I was a child. 
+
+In future chapters we will see how valuable the GCD algorithm is. 
+
+\begin{lstlisting}
+func GCD(a int32, b int32) int32 {
+	var u int32
+	var v int32
+	var t int32
+	var x int32
+
+	if a < 0 && a < -math.MaxInt32 {
+		fmt.Println("GCD: integer overflow")
+		a = -a
+	}
+	if b < 0 && b < -math.MaxInt32 {
+		fmt.Println("GCD: integer overflow")
+		b = -b
+	}
+	if b == 0 {
+		x = a
+	} else {
+		u = a
+		v = b
+		for v != 0 {
+			t = u % v
+			u = v
+			v = t
+		}
+		x = u
+	}
+	return x
+}
+\end{lstlisting}
+
+\section{Extended Greatest Common Divisor}
+
+\begin{lstlisting}
+
+func XGCD(a int32, b int32) (int32, int32, int32) {
+	var u, v, u0, v0, u1, v1, u2, v2, q, r int32
+	var aneg, bneg int32
+
+	if a < 0 {
+		if a < -math.MaxInt32 {
+			fmt.Println("XGCD: integer overflow")
+		}
+		a = -a
+		aneg = 1
+	}
+
+	if b < 0 {
+		if b < -math.MaxInt32 {
+			fmt.Println("XGCD: integer overflow")
+		}
+		b = -b
+		bneg = 1
+	}
+
+	u1 = 1
+	v1 = 0
+	u2 = 0
+	v2 = 1
+	u = a
+	v = b
+
+	for v != 0 {
+		q = u / v
+		r = u % v
+		u = v
+		v = r
+		u0 = u2
+		v0 = v2
+		u2 = u1 - q*u2
+		v2 = v1 - q*v2
+		u1 = u0
+		v1 = v0
+	}
+	if aneg != 0 {
+		u1 = -u1
+	}
+	if bneg != 0 {
+		v1 = -v1
+	}
+	return u, u1, v1
+}
+\end{lstlisting}

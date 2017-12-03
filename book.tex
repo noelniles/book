@@ -1,13 +1,6 @@
 \documentclass[a4paper,twoside]{scrbook}
-\usepackage{amsmath,amsthm,verbatim,amssymb,amsfonts,amscd, graphicx}
+\usepackage{amsmath,amsthm,verbatim,amssymb,amsfonts,amscd, graphicx, listings}
 \usepackage{graphics}
-\topmargin0.0cm
-\headheight0.0cm
-\headsep0.0cm
-\oddsidemargin0.0cm
-\textheight23.0cm
-\textwidth16.5cm
-\footskip1.0cm
 \theoremstyle{plain}
 \newtheorem{theorem}{Theorem}
 \newtheorem{corollary}{Corollary}
@@ -19,7 +12,12 @@
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}
 
-
+% Mathematical symbols
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
 
 \begin{document}
 \title{Number Theory and Abstract Algebra for Programmers}
@@ -28,8 +26,19 @@
 \maketitle
 \tableofcontents
 \mainmatter
+
+% Preface
+\include{preface}
+
+% Introduction
 \include{introduction}
+
+% Chapters
+
+% Chapter 1
 \include{in_the_beginning_there_was_euclid}
+
+% Chapter 2
 \include{and_then_there_were_groups}
 
 \end{document}
