@@ -37,7 +37,10 @@ are incommenurable (A.K.A. coprime, relatively prime, RSA cnadidates).
 \end{proposition}
 
 When I think of the Euclidean GCD algorithm I think of learning long division
-when I was a child. 
+when I was a child. Remember, drawing the frame over the dividend and then
+placing the divisor on the left. Then you would try to think how many times
+you could multiply the left number (the divisor) until you got a remainder that
+was less then the divisor. This process is called Euclidean Division.
 
 In future chapters we will see how valuable the GCD algorithm is. 
 
@@ -73,6 +76,10 @@ func GCD(a int32, b int32) int32 {
 \end{lstlisting}
 
 \section{Extended Greatest Common Divisor}
+
+Euclid's algorithm is great but we often want to know what the coeffiecents
+as well. What I mean is, what if we want to know the $x$ and $y$ that satisfy
+$ax + by = \gcd (a,b)$
 
 \begin{lstlisting}
 
