@@ -1,5 +1,6 @@
 \documentclass[a4paper,twoside]{scrbook}
 \usepackage{amsmath,amsthm,verbatim,amssymb,amsfonts,amscd, graphicx, listings}
+\usepackage{mathtools}
 \usepackage{graphics}
 \theoremstyle{plain}
 \newtheorem{theorem}{Theorem}
@@ -11,6 +12,9 @@
 \newtheorem{question}{Question} 
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}
+\newcommand{\defeq}{\vcentcolon=}
+
+\DeclareMathOperator{\lcm}{lcm}
 
 % Mathematical symbols
 \newcommand{\N}{\mathbb{N}}
@@ -40,6 +44,9 @@
 
 % Chapter 2
 \include{and_then_there_were_groups}
+
+% Chapter 3
+\include{outstanding_in_the_field}
 
 \end{document}
 

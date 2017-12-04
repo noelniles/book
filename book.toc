@@ -1,6 +1,12 @@
 \contentsline {chapter}{\numberline {1}Preface}{1}
 \contentsline {chapter}{\numberline {2}Introduction}{3}
-\contentsline {chapter}{\numberline {3}In the begining there was Euclid}{5}
-\contentsline {section}{\numberline {3.1}Greatest Common Divisor}{5}
-\contentsline {section}{\numberline {3.2}Extended Greatest Common Divisor}{6}
-\contentsline {chapter}{\numberline {4}And then there were groups}{9}
+\contentsline {chapter}{\numberline {3}Greatest Common Divisor}{5}
+\contentsline {section}{\numberline {3.1}Definitions and Properties}{5}
+\contentsline {section}{\numberline {3.2}Implementations of the Greatest Common Divisor Algorithm}{6}
+\contentsline {subsection}{\numberline {3.2.1}Euclid's Algorithm}{6}
+\contentsline {subsection}{\numberline {3.2.2}Recursive Euclidean Algorithm with $\penalty \z@ \mkern 12mu{\mathgroup \symoperators mod}\tmspace +\thinmuskip {.1667em}\tmspace +\thinmuskip {.1667em}()$}{7}
+\contentsline {subsection}{\numberline {3.2.3}Recursive GCD with Subtraction Operator}{8}
+\contentsline {section}{\numberline {3.3}Imperitive GCD}{8}
+\contentsline {section}{\numberline {3.4}Extended Greatest Common Divisor}{9}
+\contentsline {chapter}{\numberline {4}And then there were groups}{11}
+\contentsline {chapter}{\numberline {5}Outstanding in the Field}{13}

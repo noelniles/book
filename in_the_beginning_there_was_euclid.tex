@@ -1,48 +1,149 @@
-\chapter{In the begining there was Euclid}
-
-\section{Greatest Common Divisor}
-
+\chapter{Greatest Common Divisor}
 How many times does a smaller measure go into a larger measure?
 How many liters are in a gallon? How many meters in a kilometer?
 How many $\pi$ in a day? How many radii in a circumference? These kinds of
 questions were asked thousands of years ago and have motivated all of fundamental
 mathematics.
 
-It is just these sorts of questions that fueled the creation of Euclid's
-elements centuries ago. And this is why every number theory book that I have
-ever read begins with Euclid's Greatest Common Divisor algorithm. I have often
-thought that it would be nicer to learn about sets and groups first (after
-I had learned about sets and groups of course), but 
-when talking about sets and groups the GCD plays an important role in describing
-their structure and properties, so I will stick with tradtion and begin with
-Euclid's GCD algorithm.
+\section{Definitions and Properties}
+If $u$ and $v$ are two non-zero integers, the \textit{greatest common divisor} $\gcd(u, v)$ is the
+greatest number that evenly divides both $u$ and $v$. Every number divides zero so if $u = v = 0$ 
+the definition doesn't make sense instead by convention we say $\gcd(0, 0) = 0$/. From the definition
+it follows
 
-First let us state the GCD algorithm the way Euclid did. Euclid thought of 
-numbers as measures or lengths. So, we will use the same terminology. A 
-number therefore is a measure between two points. For example if A and B
-are points AB is a number.
+\begin{align}
+	\gcd(u, v) &= \gcd(v, u) \\
+	\gcd(u, v) &= \gcd(-v, u) \\
+	\gcd(u, 0) &= \left| u \right|
+\end{align}
 
-\begin{proposition}[To find the greatest common measure of two numbers]
+From the above equations we can assume that $u$ and $v$ are are positive integers. By the
+\textit{Fundamental Theorem of Arithmetic} every positive integers can be factored into the form
+\begin{equation}
+	u = 2^{u_{2}} 3^{u_{3}} 5^{u_{5}} 7^{u_{7}}\ldots = \prod_{p \, \text{prime}}{p^{u_{p}}}
+\end{equation}
+
+Related to the GCD function is the \textit{lowest common multiple (LCM)} function. The LCM function is
+the one you learned in school when adding fractions. LCM looks very similar to GCD.
+\begin{align}
+	\gcd(u, v) &= \prod_{p \, \text{prime}}{p^{\min(u_{p},v_{p})}} \\
+	\lcm(u, v) &= \prod_{p \, \text{prime}}{p^{\max(u_{p},v_{p})}}
+\end{align}
+
+Using the definition of the GCD and LCM functions we can derive several useful identities.
+
+\begin{align}
+	\gcd(u, v)w &= \gcd{uv, uw}, \quad &&if w \geq 0 \\
+	\lcm(u, v)w &= \lcm(uw, vw), \quad &&if w \geq 0 \\
+	u \cdot v   &= \gcd(u, v) \cdot \lcm(u, v) \quad &&if u, v \geq 0 \\
+	\gcd(\lcm(u, v), \lcm(u, w)) &= \lcm(u, \gcd(v, w)) \\
+	\lcm(\gcd(u, v), gcd(u, w)) &= \lcm(u, gcd(v, w))
+\end{align}
+
+
+If $gcd(u, v) = 1$ we say that $u$ is relatively prime or coprime to $v$. Coprime numbers and their properties
+are very import in group theory and will be discussed more later. Coprime numbers also arise in the RSA
+and other encryption schemes. Therefore it is important as a programmer to understand greatest Common
+divisor and be able to implement it efficiently and correctly. In the following sections we will discuss
+various ways to implement the greatest common divisor algorithm and discuss which methods are the
+best in practice.
+
+\section{Implementations of the Greatest Common Divisor Algorithm}
+\subsection{Euclid's Algorithm}
+Every textbook on number theory that I have ever read begins with a discussion of a GCD algorithm that
+is attributed to Euclid. Many algorithm and discrete math classes also begin with Euclid's algorithm.
+Euclid's algorithm is often used to introduce recursive functions to beginning programmers. The popularity
+of this method is due to it's usefulness and age. Euclid's GCD method can be found in \textit{Elements}
+Book 7, Propositions 1 and 2, (\textit{c.} 300 B.C) but he probably didn't invent it. It has survived
+over 2200 years to the present day with suprisingly few improvements by modern algebra methods.
+
+In 
+
+\begin{proposition}[To find the greatest common measure of two positive numbers]
 $ $\newline
-Let $AB$ and $CD$ be two numbers with $AB$ the less. We want to find the greatest
-common measure of $AB$ and $CD$. Either $AB$ can measure $CD$ or it cannot. If
-$AB$ measures $CD$ then it is the greatest common measure because it measures
-itself and itself is the greatest magnitude that can measure itself.
-
-If $AB$ does not measure $CD$ we can repeatedly subtract the lesser from 
-the greater until the remainder does measure $CD$. The remainder will be either
-some number or 1 (unity, numero uno). If the remainder is 1 then $AB$ and $CD$
-are incommenurable (A.K.A. coprime, relatively prime, RSA cnadidates).
-
+The greatest common measure of two lengths can be found by repeatedly subtracting
+the smaller of the two from the larger until the smaller divides the larger.
 \end{proposition}
 
-When I think of the Euclidean GCD algorithm I think of learning long division
-when I was a child. Remember, drawing the frame over the dividend and then
-placing the divisor on the left. Then you would try to think how many times
-you could multiply the left number (the divisor) until you got a remainder that
-was less then the divisor. This process is called Euclidean Division.
+\begin{proof}
+Let $A, C$ be two positive integers. We want to find the greatest common divisor of $A$ and $C$.
+If $C \mid A$ we are done becasue $C \mid C$ and $C$ is the largest divisor of itself.
+Therefore $C$ is the greatest divisor of itself and it divides $A$ making it the greatest common
+divisor.
 
-In future chapters we will see how valuable the GCD algorithm is. 
+If $C \nmid A$ then continually substract the smaller from the larger until some number remains
+that divides the previous one. This will eventually terminate on some number or unity. If the result is
+unity then it will certainly divide the previous number and $A, C$ are coprime.
+
+Let  E be the remainder of $A$ divided by $C$. And let $F$ be the remainder of $C$ divided by $E$. Since $F$
+divides $E$ and $E$ divides $C - F$, $F$ also divides $C - F$ meaning $F$ divides itself and $F$ divides $C$.
+And $C$ divides $A - E$; therefore $F$ also divides $A - E$, but it also divides $E$ therefore it also
+divides $E$ therefor it divides $A$. Thus, $F$ is a common divisor of $A$ and $C$.
+
+Now we must show that $F$ is the \textit{greatest} common divisor. Suppose there exists a number $G > F$ that
+divides both $A$ and $C$. $G$ divides $C$ and $C$ divides $A - E$ and $G$ divides $A - E$, so $G$ also divides
+the whole of $A$ so it divides the remainder $E$. But $E$ divides $C - F$ so $G$ divides $C - F$ and $G$ divides
+the whole of $C$ so it divides the remainder $F$. This leads to a contradiction with a larger number dividing
+a smaller number. Therefore $F$ is the largest number that will divide both $A$ and $C$.
+\end{proof}
+
+When I think of the Euclidean GCD algorithm I think of learning long division when I was a child. Remember, drawing
+the frame over the dividend and then placing the divisor on the left. Then you would try to think how many times
+you could multiply the left number (the divisor) until you got a remainder that was less then the divisor. This
+process is called Euclidean Division.
+
+The Euclidean GCD algorithm lends itself naturally to recursion. Below are two recursive versions of Euclid's GCD algorithm.
+The second one is due to Dijkstra and uses substraction rather than the modulus operator which should be more efficient.
+However these are presented only for reference. For serious work with large numbers we can't use recursion. I tested both 
+recurisive versions on my machine. The second version crash with a segmentation fault because the recursion tree greatest
+too deep.
+
+\subsection{Recursive Euclidean Algorithm with $\mod()$}
+The basis of this algorithm is the fact that
+\[
+0 < n \leq m \implies \gcd(m, n) =
+\begin{cases}
+	n \quad &\text{if n divides m without remainder} \\
+	\gcd(n, remainder \frac{m}{n}) \quad &\text{otherwise}
+\end{cases}
+\]
+Notice that in this version I replaced the subtraction mentioned used in Euclid's original with the modulus
+operator. This is possible because division is just repeated subtraction and we don't ever use the quotient 
+just the remainder. Below is the implementation in Go.
+
+\begin{lstlisting}
+// RGCD is the recurisive gcd algorithm. This shouldn't be used.
+func RGCD(m int32, n int32) int32 {
+	if n == 0 {
+		return m
+	}
+	return RGCD(n, m%n)
+}
+\end{lstlisting}
+
+
+\subsection{Recursive GCD with Subtraction Operator}
+The next version uses subtraction which is a simpler operation, but it also requires more operations which makes the recursion
+tree too deep for this implementation to work in the worst case.
+
+\begin{lstlisting}
+// This is a slightly better GCD function, but it still
+// shouldn't be used because of the recursion.
+func RGCD2(a int32, b int32) int32 {
+	if a == b {
+		return a
+	} else if a > b {
+		return RGCD2(a - b, b)
+	} else {
+		return RGCD2(a, b - a)
+	}
+}
+\end{lstlisting}
+
+\section{Imperitive GCD}
+A more memory friendly version of the Euclidean Algorithm is below. Notice that it uses tempory variables $u, v, r, x$. These
+are used so that we don't modify the original values. There is also some error checking code because this is the method
+I would choose in practice. 
 
 \begin{lstlisting}
 func GCD(a int32, b int32) int32 {
@@ -75,8 +176,9 @@ func GCD(a int32, b int32) int32 {
 }
 \end{lstlisting}
 
-\section{Extended Greatest Common Divisor}
+There are quicker GCD algorithms.
 
+\section{Extended Greatest Common Divisor}
 Euclid's algorithm is great but we often want to know what the coeffiecents
 as well. What I mean is, what if we want to know the $x$ and $y$ that satisfy
 $ax + by = \gcd (a,b)$
